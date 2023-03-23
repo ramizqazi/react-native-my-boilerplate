@@ -6,19 +6,34 @@ import * as Colors from '../config/colors';
 /* =============================================================================
 <Card />
 ============================================================================= */
-const Card = ({width, height, children, style, shadow, ...props}) => {
+const Card = ({width, height, center, children, style, shadow, ...props}) => {
   const _style = {
     width,
     height,
   };
 
+  const _center = {
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
+
   return (
     <View
-      style={[styles.container, _style, style, shadow ? styles.shadow : null]}
+      style={[
+        _style,
+        style,
+        styles.container,
+        center && _center,
+        shadow ? styles.shadow : null,
+      ]}
       {...props}>
       {children}
     </View>
   );
+};
+
+Card.defaultProps = {
+  shadow: true,
 };
 
 const styles = StyleSheet.create({
@@ -26,21 +41,19 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 'auto',
     borderRadius: 4,
-    borderWidth: 1,
-    borderColor: '#F5F5F8',
+    padding: 10,
     backgroundColor: Colors.white,
   },
   shadow: {
-    borderWidth: 0,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 0.18,
-    shadowRadius: 1.0,
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
 
-    elevation: 1,
+    elevation: 2,
   },
 });
 

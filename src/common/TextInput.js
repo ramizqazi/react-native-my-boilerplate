@@ -1,5 +1,4 @@
 import React, {useRef} from 'react';
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import {
   View,
   Text,
@@ -26,7 +25,11 @@ const TextInput = ({
   inputStyle,
   containerStyle,
   contentContainerStyle,
+  rightContainerStyle,
+  leftContainerStyle,
   onPress,
+  onRightPress,
+  onLeftPress,
   onChange,
   ...props
 }) => {
@@ -46,19 +49,44 @@ const TextInput = ({
     }
   };
 
+  const _handleRightPress = () => {
+    if (typeof onRightPress === 'function') {
+      onRightPress();
+    }
+  };
+
+  const _handleLeftPress = () => {
+    if (typeof onLeftPress === 'function') {
+      onLeftPress();
+    }
+  };
+
+  const _renderRight = () => {
+    if (right) {
+      return right;
+    }
+    return null;
+  };
+
+  const _renderLeft = () => {
+    if (left) {
+      return left;
+    }
+    return null;
+  };
+
   return (
     <Pressable
       style={[styles.container, containerStyle]}
       disabled={disabled}
       onPress={_handlePress}>
       {!!label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
-      <View
-        style={[
-          styles.content,
-          !!errorText && styles.error,
-          contentContainerStyle,
-        ]}>
-        {left}
+      <View style={[styles.content, contentContainerStyle]}>
+        <Pressable
+          style={[styles.left, leftContainerStyle]}
+          onPress={_handleLeftPress}>
+          {_renderLeft()}
+        </Pressable>
         <RNTextInput
           ref={_textInput}
           value={value}
@@ -75,14 +103,13 @@ const TextInput = ({
           onChangeText={_handleChange}
           {...props}
         />
-        {right}
+        <Pressable
+          style={[styles.right, rightContainerStyle]}
+          onPress={_handleRightPress}>
+          {_renderRight()}
+        </Pressable>
       </View>
-      {!!errorText && (
-        <Text style={styles.errorTxt}>
-          <FontAwesome5Icon name="info-circle" color={Colors.primary} />{' '}
-          {errorText}
-        </Text>
-      )}
+      {!!errorText && <Text style={styles.errorTxt}>{errorText}</Text>}
     </Pressable>
   );
 };
@@ -98,31 +125,28 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   label: {
-    fontSize: 16,
+    fontSize: 18,
     marginBottom: 8,
-    letterSpacing: 1,
-    color: '#2A3037',
-    fontFamily: 'SFProDisplay-Semibold',
+    color: Colors.text,
+    fontFamily: 'Inter-SemiBold',
   },
   content: {
     width: '100%',
-    borderRadius: 16,
+    borderRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 14,
-    backgroundColor: Colors.grey1,
-  },
-  error: {
-    borderWidth: 1.2,
-    borderColor: Colors.primary,
+    paddingLeft: 16,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    backgroundColor: Colors.primaryLight,
   },
   input: {
-    height: 56,
     flex: 1,
+    height: 48,
+    fontSize: 14,
+    color: Colors.text,
     paddingHorizontal: 0,
-    fontSize: 15,
-    color: Colors.grey3,
-    fontFamily: 'SFProDisplay-Regular',
+    fontFamily: 'Inter-Medium',
   },
   inputWithLeft: {
     marginLeft: 14,
@@ -130,9 +154,17 @@ const styles = StyleSheet.create({
   inputWithRight: {
     marginRight: 14,
   },
+  right: {
+    height: 48,
+    paddingRight: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   errorTxt: {
-    color: Colors.primary,
-    marginTop: 5,
+    color: Colors.danger,
+    marginTop: 12,
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
     marginLeft: 5,
   },
 });

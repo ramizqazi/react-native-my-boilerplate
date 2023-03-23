@@ -118,23 +118,21 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   left: {
-    flex: 1,
+    padding: 20,
     alignItems: 'flex-start',
-    paddingLeft: 20,
   },
   center: {
-    flex: 3,
+    flex: 1,
   },
   right: {
-    flex: 1,
+    padding: 20,
     alignItems: 'flex-end',
-    paddingRight: 20,
   },
   title: {
-    color: Colors.black,
     fontSize: 18,
-    textAlign: 'center',
-    fontFamily: 'SFProDisplay-Regular',
+    textAlign: 'left',
+    color: Colors.black,
+    fontFamily: 'Inter-SemiBold',
   },
 });
 
